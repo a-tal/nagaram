@@ -81,6 +81,9 @@ def argument_parser(args):
             a boolean to declare if we want to output anagrams by length
             a string or false to find anagrams based on starting characters
             a string or false to find anagrams based on ending characters
+
+    Raises:
+        SystemExit if the user passes invalid arguments, --version or --help
     """
 
     parser = argparse.ArgumentParser(
@@ -196,7 +199,10 @@ def valid_scrabble_word(word):
     for letter in word:
         if letter == "?":
             continue
-        letters_in_bag[letter] -= 1
+        try:
+            letters_in_bag[letter] -= 1
+        except KeyError:
+            return False
         if letters_in_bag[letter] < 0:
             letters_in_bag["_"] -= 1
             if letters_in_bag["_"] < 0:
@@ -258,8 +264,10 @@ def find_anagrams(input_word, sowpods=False, start=False, end=False):
         input_letters, blanks, questions = _blank_tiles(input_word)
         if start:
             questions += len(start)
+            input_letters.append(tile for tile in start)
         if end:
             questions += len(end)
+            input_letters.append(tile for tile in end)
         lmap = _letter_map(input_letters)
         used_blanks = 0
         for letter in word:
@@ -371,7 +379,7 @@ def _letter_score(letter):
         TypeError if a non-Scrabble character is supplied
     """
 
-    if len(letter) != 1 or type(letter) != str:
+    if not isinstance(letter, str) or len(letter) != 1:
         raise TypeError("Invalid letter: %s", letter)
 
     score_map = {
