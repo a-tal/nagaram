@@ -264,10 +264,12 @@ def find_anagrams(input_word, sowpods=False, start=False, end=False):
         input_letters, blanks, questions = _blank_tiles(input_word)
         if start:
             questions += len(start)
-            input_letters.append(tile for tile in start)
+            for tile in start:
+                input_letters.append(tile)
         if end:
             questions += len(end)
-            input_letters.append(tile for tile in end)
+            for tile in end:
+                input_letters.append(tile)
         lmap = _letter_map(input_letters)
         used_blanks = 0
         for letter in word:
