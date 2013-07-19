@@ -43,7 +43,7 @@ def pretty_print(input_word, anagrams, by_length=False):
     print("Anagrams for {}{}:".format(
         input_word,
         " (score)" * by_length,
-        ))
+    ))
 
     if not valid_scrabble_word(input_word):
         print("{} is not possible in Scrabble.".format(input_word))
@@ -90,14 +90,14 @@ def argument_parser(args):
         prog='nagaram',
         description='Finds Scabble anagrams.',
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        )
+    )
 
     parser.add_argument(
         '--sowpods',
         dest='sowpods',
         action='store_true',
         default=False,
-        )
+    )
 
     parser.add_argument(
         '--length',
@@ -105,7 +105,7 @@ def argument_parser(args):
         dest='length',
         action='store_true',
         default=False,
-        )
+    )
 
     parser.add_argument(
         '--starts-with',
@@ -115,7 +115,7 @@ def argument_parser(args):
         default=False,
         nargs=1,
         type=str,
-        )
+    )
 
     parser.add_argument(
         '--ends-with',
@@ -125,25 +125,25 @@ def argument_parser(args):
         default=False,
         nargs=1,
         type=str,
-        )
+    )
 
     parser.add_argument(
         '--version',
         '-v',
         action='version',
-        version="""Nagaram 0.01 (Released: February 21, 2013)
+        version="""Nagaram 0.1.1 (Released: July 18, 2013)
 Copyright (C) 2013 Adam Talsma <adam@talsma.ca>
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 
 This is free software; you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.""",
-        )
+    )
 
     parser.add_argument(
         dest='wordlist',
         metavar="letters to find anagrams with (? for anything, _ for blanks)",
         nargs=argparse.REMAINDER,
-        )
+    )
 
     settings = parser.parse_args(args)
 
@@ -156,7 +156,7 @@ There is NO WARRANTY, to the extent permitted by law.""",
         settings.ends_with = settings.ends_with[0]
 
     return (settings.wordlist, settings.sowpods, settings.length,
-        settings.starts_with, settings.ends_with)
+            settings.starts_with, settings.ends_with)
 
 
 def valid_scrabble_word(word):
@@ -194,7 +194,7 @@ def valid_scrabble_word(word):
         "y": 2,
         "z": 1,
         "_": 2,
-        }
+    }
 
     for letter in word:
         if letter == "?":
@@ -390,7 +390,7 @@ def _letter_score(letter):
         5: ["k"],
         8: ["j", "x"],
         10: ["q", "z"],
-        }
+    }
 
     for score, letters in score_map.items():
         if letter.lower() in letters:
@@ -399,12 +399,21 @@ def _letter_score(letter):
         raise TypeError("Invalid letter: %s", letter)
 
 
-def main():
+def _find_all_anagrams():
     """Main command line entry point."""
 
     wordlist, sowpods, by_length, start, end = argument_parser(sys.argv[1:])
     for word in wordlist:
         pretty_print(word, find_anagrams(word, sowpods, start, end), by_length)
+
+
+def main():
+    """Main entry point."""
+
+    try:
+        _find_all_anagrams()
+    except KeyboardInterrupt:
+        raise SystemExit("Interrupted")
 
 
 if __name__ == "__main__":

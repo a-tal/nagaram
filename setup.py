@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='Nagaram',
-    version='0.1',
+    version='0.1.1',
     author='Adam Talsma',
     author_email='adam@talsma.ca',
     package_dir={'nagaram': 'src'},
@@ -16,7 +16,7 @@ setup(
     long_description=(
         "Scrabble anagram finder. Returns words based on Scrabble score. Works"
         " with both Tournament Words List and SOWPODS."
-        ),
+    ),
     download_url='https://github.com/a-tal/nagaram',
     license="GPL3+",
     classifiers=[
@@ -28,5 +28,5 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Topic :: Games/Entertainment',
         'Topic :: Utilities',
-        ],
-    )
+    ],
+)
