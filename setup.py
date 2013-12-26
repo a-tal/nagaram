@@ -1,12 +1,12 @@
 from distutils.core import setup
 
 setup(
-    name='Nagaram',
-    version='0.1.1',
+    name='nagaram',
+    version='0.2.0',
     author='Adam Talsma',
     author_email='adam@talsma.ca',
     package_dir={'nagaram': 'src'},
-    package_data={'nagaram': ['twl.txt', 'sowpods.txt']},
+    data_files=[('/usr/share/nagaram', ['src/twl.txt', 'src/sowpods.txt'])],
     packages=['nagaram'],
     provides=['nagaram'],
     requires=['argparse'],

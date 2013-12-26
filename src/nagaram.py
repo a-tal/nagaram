@@ -36,36 +36,33 @@ def pretty_print(input_word, anagrams, by_length=False):
 
     Args:
         input_word: the base word we searched on
-        anagrams: a list of anagrams from find_anagrams
+        anagrams: generator of (word, score) from find_anagrams
         by_length: a boolean to declare printing by length instead of score
     """
 
-    print("Anagrams for {}{}:".format(
-        input_word,
-        " (score)" * by_length,
-    ))
+    scores = {}
+    if by_length:
+        noun = "tiles"
+        for word, score in anagrams:
+            try:
+                scores[len(word)].append("{} ({:d})".format(word, score))
+            except KeyError:
+                scores[len(word)] = ["{} ({:d})".format(word, score)]
+    else:
+        noun = "points"
+        for word, score in anagrams:
+            try:
+                scores[score].append(word)
+            except KeyError:
+                scores[score] = [word]
+
+    print("Anagrams for {}{}:".format(input_word, " (score)" * by_length))
 
     if not valid_scrabble_word(input_word):
         print("{} is not possible in Scrabble.".format(input_word))
 
-    if by_length:
-        length_map = dict()
-        for word, score in anagrams:
-            try:
-                length_map[len(word)].append("{} ({:d})".format(word, score))
-            except KeyError:
-                length_map[len(word)] = ["{} ({:d})".format(word, score)]
-        for key, value in sorted(length_map.items(), reverse=True):
-            print("{:d} tiles: {}".format(key, ', '.join(value)))
-    else:
-        score_map = dict()
-        for word, score in anagrams:
-            try:
-                score_map[score].append(word)
-            except KeyError:
-                score_map[score] = [word]
-        for key, value in sorted(score_map.items(), reverse=True):
-            print("{:d} points: {}".format(key, ', '.join(value)))
+    for key, value in sorted(scores.items(), reverse=True):
+        print("{:d} {}: {}".format(key, noun, ", ".join(value)))
 
 
 def argument_parser(args):
@@ -79,59 +76,59 @@ def argument_parser(args):
             a list of words/letters to search
             a boolean to declare if we want to use the sowpods words file
             a boolean to declare if we want to output anagrams by length
-            a string or false to find anagrams based on starting characters
-            a string or false to find anagrams based on ending characters
+            a string of starting characters to find anagrams based on
+            a string of ending characters to find anagrams based on
 
     Raises:
         SystemExit if the user passes invalid arguments, --version or --help
     """
 
     parser = argparse.ArgumentParser(
-        prog='nagaram',
-        description='Finds Scabble anagrams.',
+        prog="nagaram",
+        description="Finds Scabble anagrams.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
     parser.add_argument(
-        '--sowpods',
-        dest='sowpods',
-        action='store_true',
+        "--sowpods",
+        dest="sowpods",
+        action="store_true",
         default=False,
     )
 
     parser.add_argument(
-        '--length',
-        '-l',
-        dest='length',
-        action='store_true',
+        "--length",
+        "-l",
+        dest="length",
+        action="store_true",
         default=False,
     )
 
     parser.add_argument(
-        '--starts-with',
-        '-s',
-        dest='starts_with',
+        "--starts-with",
+        "-s",
+        dest="starts_with",
         metavar="chars",
-        default=False,
+        default="",
         nargs=1,
         type=str,
     )
 
     parser.add_argument(
-        '--ends-with',
-        '-e',
-        dest='ends_with',
+        "--ends-with",
+        "-e",
+        dest="ends_with",
         metavar="chars",
-        default=False,
+        default="",
         nargs=1,
         type=str,
     )
 
     parser.add_argument(
-        '--version',
-        '-v',
-        action='version',
-        version="""Nagaram 0.1.1 (Released: July 18, 2013)
+        "--version",
+        "-v",
+        action="version",
+        version="""Nagaram 0.2.0 (Released: December 26, 2013)
 Copyright (C) 2013 Adam Talsma <adam@talsma.ca>
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 
@@ -140,7 +137,7 @@ There is NO WARRANTY, to the extent permitted by law.""",
     )
 
     parser.add_argument(
-        dest='wordlist',
+        dest="wordlist",
         metavar="letters to find anagrams with (? for anything, _ for blanks)",
         nargs=argparse.REMAINDER,
     )
@@ -210,16 +207,16 @@ def valid_scrabble_word(word):
     return True
 
 
-def word_list(sowpods=False, start=False, end=False):
+def word_list(sowpods=False, start="", end=""):
     """Opens the word list file.
 
     Args:
-        sowpods: a boolean to declare using the sowpods list or twl (default)
-        start: a string or false to find anagrams based on starting characters
-        end: a string or false to find anagrams based on ending characters
+        sowpods: a boolean to declare using the sowpods list or TWL (default)
+        start: a string of starting characters to find anagrams based on
+        end: a string of ending characters to find anagrams based on
 
-    Returns:
-        a large list of words. 178691 by default, 267751 if sowpods=True. Much
+    Yeilds:
+        a word at a time out of 178691 words for TWL, 267751 for sowpods. Much
         less if either start or end are used (filtering is applied here)
     """
 
@@ -228,50 +225,44 @@ def word_list(sowpods=False, start=False, end=False):
     else:
         filename = "twl.txt"
 
-    cwd = os.path.dirname(os.path.realpath(__file__))
-    filepath = os.path.join(cwd, filename)
+    filepath = os.path.join("/usr/share/nagaram", filename)
 
-    wordlist = list()
     with open(filepath) as wordfile:
         for word in wordfile.readlines():
             word = word.strip()
             if start and end and word.startswith(start) and word.endswith(end):
-                wordlist.append(word)
+                yield word
             elif start and word.startswith(start) and not end:
-                wordlist.append(word)
+                yield word
             elif end and word.endswith(end) and not start:
-                wordlist.append(word)
+                yield word
             elif not start and not end:
-                wordlist.append(word)
-    return wordlist
+                yield word
 
 
-def find_anagrams(input_word, sowpods=False, start=False, end=False):
+def find_anagrams(input_word, sowpods=False, start="", end=""):
     """Finds anagrams in input_word.
 
     Args:
         input_word: the string to base our search off of
         sowpods: boolean to declare TWL or SOWPODS words file
-        start: a string or false to find anagrams based on starting characters
-        end: a string or false to find anagrams based on ending characters
+        start: a string of starting characters to find anagrams based on
+        end: a string of ending characters to find anagrams based on
 
-    Returns:
-        a list of tuples (word, score) that can be made with the input_word
+    Yields:
+        a tuple of (word, score) that can be made with the input_word
     """
 
-    anagrams = list()
+    input_letters, blanks, questions = _blank_tiles(input_word)
+
+    for tile in start + end:
+        input_letters.append(tile)
+
     for word in word_list(sowpods, start, end):
-        input_letters, blanks, questions = _blank_tiles(input_word)
-        if start:
-            for tile in start:
-                input_letters.append(tile)
-        if end:
-            for tile in end:
-                input_letters.append(tile)
         lmap = _letter_map(input_letters)
         used_blanks = 0
         for letter in word:
-            if letter in lmap.keys():
+            if letter in lmap:
                 lmap[letter] -= 1
                 if lmap[letter] < 0:
                     used_blanks += 1
@@ -282,9 +273,7 @@ def find_anagrams(input_word, sowpods=False, start=False, end=False):
                 if used_blanks > (blanks + questions):
                     break
         else:
-            score = word_score(word, input_letters, questions)
-            anagrams.append((word, score))
-    return anagrams
+            yield (word, word_score(word, input_letters, questions))
 
 
 def _blank_tiles(input_word):
@@ -302,7 +291,7 @@ def _blank_tiles(input_word):
 
     blanks = 0
     questions = 0
-    input_letters = list()
+    input_letters = []
     for letter in input_word:
         if letter == "_":
             blanks += 1
@@ -320,10 +309,10 @@ def _letter_map(word):
         word: a string to create a letter map from
 
     Returns:
-        a dictionary of letter: integer count of letter in word
+        a dictionary of {letter: integer count of letter in word}
     """
 
-    lmap = dict()
+    lmap = {}
     for letter in word:
         try:
             lmap[letter] += 1
@@ -346,12 +335,13 @@ def word_score(word, input_letters, questions=0):
 
     score = 0
     bingo = 0
-    filled_by_blanks = list()
+    filled_by_blanks = []
+    rack = list(input_letters)  # make a copy to speed up find_anagrams()
     for letter in word:
-        if letter in input_letters:
+        if letter in rack:
             bingo += 1
             score += _letter_score(letter)
-            input_letters.remove(letter)
+            rack.remove(letter)
         else:
             filled_by_blanks.append(_letter_score(letter))
 
@@ -378,9 +368,6 @@ def _letter_score(letter):
     Raises:
         TypeError if a non-Scrabble character is supplied
     """
-
-    if not isinstance(letter, str) or len(letter) != 1:
-        raise TypeError("Invalid letter: %s", letter)
 
     score_map = {
         1: ["a", "e", "i", "o", "u", "l", "n", "r", "s", "t"],
