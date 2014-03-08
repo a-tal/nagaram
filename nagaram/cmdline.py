@@ -116,7 +116,7 @@ def argument_parser(args):
         "--version",
         "-v",
         action="version",
-        version="Nagaram {} (Released: {})".format(
+        version="Nagaram {0} (Released: {1})".format(
             nagaram.__version__,
             nagaram.__release_date__,
         )

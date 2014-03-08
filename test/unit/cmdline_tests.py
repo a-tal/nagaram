@@ -198,8 +198,13 @@ class CmdLineTests(unittest.TestCase):
         with self.assertRaises(SystemExit) as error:
             argument_parser(["--help"])
 
+        if sys.version_info < (3,):
+            error_message = error.exception.message.strip().splitlines()
+        else:
+            error_message = error.exception.code.strip().splitlines()
+
         for line in expected_help:
-            self.assertIn(line, error.exception.message)
+            self.assertIn(line, error_message)
 
     def test_no_args_prints_use(self):
         """Should provide some help to the user when passed no args."""
