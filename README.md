@@ -1,4 +1,4 @@
-nagaram
+nagaram [![Build Status](https://travis-ci.org/a-tal/nagaram.png?branch=master)](https://travis-ci.org/a-tal/nagaram) [![Coverage Status](https://coveralls.io/repos/a-tal/nagaram/badge.png?branch=master)](https://coveralls.io/r/a-tal/nagaram?branch=master)
 =======
 
 Scrabble anagram finder. Returns anagrams based on Scrabble score.
