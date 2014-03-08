@@ -3,6 +3,8 @@ nagaram
 
 [![Build Status](https://travis-ci.org/a-tal/nagaram.png?branch=master)](https://travis-ci.org/a-tal/nagaram)
 [![Coverage Status](https://coveralls.io/repos/a-tal/nagaram/badge.png?branch=master)](https://coveralls.io/r/a-tal/nagaram?branch=master)
+[![Stories in Backlog](https://badge.waffle.io/a-tal/nagaram.png?label=ready&title=Backlog)](https://waffle.io/a-tal/nagaram)
+[![Stories In Progress](https://badge.waffle.io/a-tal/nagaram.png?label=ready&title=In+Progress)](https://waffle.io/a-tal/nagaram)
 [![Version](https://pypip.in/v/nagaram/badge.png)](https://pypi.python.org/pypi/nagaram/)
 [![Downloads this month](https://pypip.in/d/nagaram/badge.png)](https://pypi.python.org/pypi/nagaram/)
 
