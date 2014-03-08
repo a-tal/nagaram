@@ -105,7 +105,7 @@ class CmdLineTests(unittest.TestCase):
         word = "vin_diesel_in_xxx"
         pretty_print(word, anagrams_in_word(word))
         stdout = sys.stdout.getvalue().strip().splitlines()
-        expected = "{} is not possible in Scrabble.".format(word)
+        expected = "{0} is not possible in Scrabble.".format(word)
         self.assertIn(expected, stdout)
 
     def test_arg_parsing_basic(self):
@@ -177,7 +177,7 @@ class CmdLineTests(unittest.TestCase):
     def test_version_output(self):
         """Make sure the version information is properly displayed."""
 
-        expected_version = "Nagaram {} (Released: {})".format(
+        expected_version = "Nagaram {0} (Released: {1})".format(
             nagaram.__version__,
             nagaram.__release_date__,
         )
