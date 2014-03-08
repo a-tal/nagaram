@@ -9,8 +9,6 @@ python:
 before_install:
   - pip install --upgrade coveralls
   - pip install --upgrade coverage
-  - mkdir -p /usr/share/nagaram
-  - cp wordlists/* /usr/share/nagaram/
 
 script: "nosetests --with-coverage --cover-package=nagaram"
 
