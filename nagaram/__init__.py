@@ -1,14 +1,9 @@
-nagaram
-=======
+"""Nagaram. Scrabble word anagram finder.
 
-Scrabble anagram finder. Returns anagrams based on Scrabble score.
-
-Usage
-======
-
+Usage:
     nagaram [--sowpods] [-l] [-s chars] [-e chars] <letters>
 
-? can be used to represent another tile on the board to play on  
+? can be used to represent another tile on the board to play on
 _ can be used to represent blank tiles in your rack (no points)
 
 By default it will use the Tournament Words List. The --sowpods command line
@@ -19,3 +14,4 @@ rather than the default of by Scrabble score.
 
 The -s flag can be used to provide starting characters already on the board,
 similarily the -e flag can be used for ending characters.
+"""

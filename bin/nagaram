@@ -1,8 +1,8 @@
 #!/usr/bin/env python3.3
 
 
-from nagaram import nagaram
+from nagaram import cmdline
 
 
 if __name__ == "__main__":
-	nagaram.main()
+	cmdline.main()
