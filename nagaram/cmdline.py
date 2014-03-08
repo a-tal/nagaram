@@ -1,10 +1,14 @@
 """Command line entry and exit points."""
 
 
+from __future__ import print_function, unicode_literals
+
 import sys
 import argparse
 
 import nagaram
+from nagaram.anagrams import anagrams_in_word
+from nagaram.scrabble import valid_scrabble_word
 
 
 def pretty_print(input_word, anagrams, by_length=False):
@@ -12,7 +16,7 @@ def pretty_print(input_word, anagrams, by_length=False):
 
     Args:
         input_word: the base word we searched on
-        anagrams: generator of (word, score) from find_anagrams
+        anagrams: generator of (word, score) from anagrams_in_word
         by_length: a boolean to declare printing by length instead of score
     """
 
@@ -34,7 +38,7 @@ def pretty_print(input_word, anagrams, by_length=False):
 
     print("Anagrams for {0}{1}:".format(input_word, " (score)" * by_length))
 
-    if not nagaram.scrabble.valid_scrabble_word(input_word):
+    if not valid_scrabble_word(input_word):
         print("{0} is not possible in Scrabble.".format(input_word))
 
     for key, value in sorted(scores.items(), reverse=True):
@@ -112,7 +116,10 @@ def argument_parser(args):
         "--version",
         "-v",
         action="version",
-        version="Nagaram 0.3.0 (Released: March 7, 2014)",
+        version="Nagaram {} (Released: {})".format(
+            nagaram.__version__,
+            nagaram.__release_date__,
+        )
     )
 
     parser.add_argument(
@@ -148,6 +155,6 @@ def main(arguments=None):
     for word in wordlist:
         pretty_print(
             word,
-            nagaram.anagrams.anagrams_in_word(word, sowpods, start, end),
+            anagrams_in_word(word, sowpods, start, end),
             by_length,
         )

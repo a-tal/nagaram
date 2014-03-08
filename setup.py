@@ -6,7 +6,7 @@ from setuptools import setup
 
 setup(
     name='nagaram',
-    version='0.3.0',
+    version='0.3.1',
     author='Adam Talsma',
     author_email='adam@talsma.ca',
     data_files=[

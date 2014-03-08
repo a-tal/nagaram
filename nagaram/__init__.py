@@ -15,3 +15,7 @@ rather than the default of by Scrabble score.
 The -s flag can be used to provide starting characters already on the board,
 similarily the -e flag can be used for ending characters.
 """
+
+
+__version__ = "0.3.1"
+__release_date__ = "March 8, 2014"

@@ -1,6 +1,4 @@
 #coding: utf-8
-
-
 """Tests for nagaram's scrabble calculations."""
 
 
@@ -22,7 +20,7 @@ from nagaram.scrabble import (
 
 
 def _call_word_list(*args, **kwargs):
-    """Call word_list but insider the test wordlist directory location."""
+    """Inserts location kwarg for the pre-installed wordlist directory."""
 
     location = os.path.join(
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(
@@ -35,6 +33,7 @@ def _call_word_list(*args, **kwargs):
 
 class ScrabbleTests(unittest.TestCase):
     """TestCases for Scrabble(tm) related functions."""
+
     def test_basic_word_scores(self):
         """Some simple use cases, count the scores correctly."""
 
