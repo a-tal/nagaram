@@ -2,7 +2,6 @@
 """Tests for nagaram's scrabble calculations."""
 
 
-import os
 import sys
 
 if sys.version_info <= (2, 7):
@@ -17,18 +16,6 @@ from nagaram.scrabble import (
     word_score,
     letter_score,
 )
-
-
-def _call_word_list(*args, **kwargs):
-    """Inserts location kwarg for the pre-installed wordlist directory."""
-
-    location = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(
-        __file__)))),
-        "wordlists",
-    )
-    kwargs.update({"location": location})
-    return word_list(*args, **kwargs)
 
 
 class ScrabbleTests(unittest.TestCase):
@@ -110,11 +97,11 @@ class ScrabbleTests(unittest.TestCase):
     def test_word_list_basic(self):
         """Ensure we're getting the words we should be."""
 
-        for word in _call_word_list():
+        for word in word_list():
             self.assertEqual("aa", word)
             break
 
-        for word in _call_word_list(sowpods=True):
+        for word in word_list(sowpods=True):
             self.assertEqual("aa", word)
             break
 
@@ -122,11 +109,11 @@ class ScrabbleTests(unittest.TestCase):
         """Test getting words starting with some characters."""
 
         starting_characters = "saxifr"
-        for word in _call_word_list(start=starting_characters):
+        for word in word_list(start=starting_characters):
             self.assertEqual("saxifrage", word)
             break
 
-        for word in _call_word_list(sowpods=True, start=starting_characters):
+        for word in word_list(sowpods=True, start=starting_characters):
             self.assertEqual("saxifragaceous", word)
             break
 
@@ -134,11 +121,11 @@ class ScrabbleTests(unittest.TestCase):
         """Test getting words ending with some characters."""
 
         ending_characters = "stylar"
-        for word in _call_word_list(end=ending_characters):
+        for word in word_list(end=ending_characters):
             self.assertEqual("astylar", word)
             break
 
-        for word in _call_word_list(sowpods=True, end=ending_characters):
+        for word in word_list(sowpods=True, end=ending_characters):
             self.assertEqual("amphiprostylar", word)
             break
 
@@ -147,11 +134,11 @@ class ScrabbleTests(unittest.TestCase):
 
         starting = "ab"
         ending = "nally"
-        for word in _call_word_list(start=starting, end=ending):
+        for word in word_list(start=starting, end=ending):
             self.assertEqual("abdominally", word)
             break
 
-        for word in _call_word_list(sowpods=True, start=starting, end=ending):
+        for word in word_list(sowpods=True, start=starting, end=ending):
             self.assertEqual("abactinally", word)
             break
 

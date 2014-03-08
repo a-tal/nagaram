@@ -95,19 +95,25 @@ def blank_tiles(input_word):
     return input_letters, blanks, questions
 
 
-def word_list(sowpods=False, start="", end="", location="/usr/share/nagaram"):
+def word_list(sowpods=False, start="", end=""):
     """Opens the word list file.
 
     Args:
         sowpods: a boolean to declare using the sowpods list or TWL (default)
         start: a string of starting characters to find anagrams based on
         end: a string of ending characters to find anagrams based on
-        location: filepath to where the wordslist txt files are stored
 
     Yeilds:
         a word at a time out of 178691 words for TWL, 267751 for sowpods. Much
         less if either start or end are used (filtering is applied here)
     """
+
+    location = "/usr/share/nagaram"
+    if not os.path.exists(location):
+        location = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+            "wordlists",
+        )
 
     if sowpods:
         filename = "sowpods.txt"
