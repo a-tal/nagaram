@@ -23,6 +23,8 @@ setup(
         " with both Tournament Words List and SOWPODS."
     ),
     download_url='https://github.com/a-tal/nagaram',
+    tests_require=['nose'],
+    test_suite='nose.collector',
     license="BSD",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
