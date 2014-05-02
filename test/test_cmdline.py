@@ -127,7 +127,7 @@ def test_help_is_docstring():
             if line in arg:
                 break
         else:
-            assert 0, "{} not found in {}".format(line, error.value.args)
+            assert 0, "{0} not found in {1}".format(line, error.value.args)
 
 
 def test_no_args_prints_use(capfd):
