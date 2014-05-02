@@ -5,13 +5,9 @@ python:
   - '2.7'
   - '3.2'
   - '3.3'
+  - '3.4'
 
-before_install:
-  - pip install --upgrade coveralls
-  - pip install --upgrade coverage
-  - if [[ $TRAVIS_PYTHON_VERSION == "2.6" ]]; then pip install --upgrade unittest2; fi
-
-script: "nosetests --with-coverage --cover-package=nagaram"
+script: "python setup.py test"
 
 after_success:
   - coveralls
