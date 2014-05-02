@@ -112,8 +112,8 @@ def test_version_output(arg, capfd):
     )
     with pytest.raises(SystemExit):
         argument_parser([arg])
-    _, stderr = capfd.readouterr()
-    assert expected_version in stderr
+    stdout, stderr = capfd.readouterr()
+    assert expected_version in stdout + stderr
 
 
 def test_help_is_docstring():
