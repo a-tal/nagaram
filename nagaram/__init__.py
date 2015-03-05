@@ -17,5 +17,5 @@ similarily the -e flag can be used for ending characters.
 """
 
 
-__version__ = "0.3.6"
+__version__ = "0.3.7"
 __release_date__ = "March 5, 2015"
