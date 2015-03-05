@@ -1,1 +1,1 @@
-include wordlists/*
+graft wordlists
