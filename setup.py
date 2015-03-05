@@ -1,17 +1,21 @@
 """Setup.py for nagaram."""
 
 
+import io
+import re
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
 
-with open("nagaram/__init__.py", "r") as openinit:
-    for line in openinit.readlines():
-        if line.startswith("__version__ ="):
-            __version__ = line[14:].replace('"', "").replace('"', "").strip()
-            break
-    else:
-        __version__ = "0.0-version-unknown"
+def find_version(filename):
+    """Uses re to pull out the assigned value to __version__ in filename."""
+
+    with io.open(filename, encoding="utf-8") as version_file:
+        version_match = re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]',
+                                  version_file.read(), re.M)
+    if version_match:
+        return version_match.group(1)
+    return "0.0-version-unknown"
 
 
 class PyTest(TestCommand):
@@ -37,16 +41,15 @@ class PyTest(TestCommand):
 
 setup(
     name='nagaram',
-    version=__version__,
+    version=find_version("nagaram/__init__.py"),
     author='Adam Talsma',
     author_email='adam@talsma.ca',
     data_files=[
-        ('/usr/share/nagaram', ['wordlists/twl.txt', 'wordlists/sowpods.txt']),
+        ('wordlists', ['wordlists/twl.txt', 'wordlists/sowpods.txt']),
     ],
+    include_package_data=True,
     packages=['nagaram'],
-    provides=['nagaram'],
-    install_requires=['argparse'],
-    scripts=['bin/nagaram'],
+    entry_points={'console_scripts': ['nagaram = nagaram.cmdline:main']},
     url='https://github.com/a-tal/nagaram',
     zip_safe=False,
     description='Scrabble anagram finder',
