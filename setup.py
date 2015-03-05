@@ -44,9 +44,7 @@ setup(
     version=find_version("nagaram/__init__.py"),
     author='Adam Talsma',
     author_email='adam@talsma.ca',
-    data_files=[
-        ('wordlists', ['wordlists/twl.txt', 'wordlists/sowpods.txt']),
-    ],
+    package_data={"nagaram": ['wordlists/twl.txt', 'wordlists/sowpods.txt']},
     include_package_data=True,
     packages=['nagaram'],
     entry_points={'console_scripts': ['nagaram = nagaram.cmdline:main']},

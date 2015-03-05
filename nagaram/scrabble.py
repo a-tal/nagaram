@@ -108,12 +108,10 @@ def word_list(sowpods=False, start="", end=""):
         less if either start or end are used (filtering is applied here)
     """
 
-    location = "/usr/share/nagaram"
-    if not os.path.exists(location):
-        location = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-            "wordlists",
-        )
+    location = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        "wordlists",
+    )
 
     if sowpods:
         filename = "sowpods.txt"
